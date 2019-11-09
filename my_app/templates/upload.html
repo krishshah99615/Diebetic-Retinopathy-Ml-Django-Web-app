@@ -1,0 +1,48 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block content %}
+<center>
+    <form action="{% url 'home' %}" method="post" enctype="multipart/form-data" class="mt-5">
+        {% csrf_token %}
+        <div class="form-group">
+            {% if isup %}
+
+            <img src="{{imgurl}}" alt="Avatar" style="height:200px;weight:100px;">
+
+            {% else %}
+
+            <img src="{% static 'photo.png' %}" alt="Avatar" style="height:100px;weight:100px;">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {% if form and not isup %}
+            {{form.as_p}}
+            <label for="upload">Upload Image Here</label><br>
+            <button type="submit" class="btn btn-warning">Upload</button>
+            {% endif %}
+        </div>
+
+
+    </form>
+
+
+    {% if isup %}
+    <form action="{% url 'predict' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning mt-3">Predict</button>
+    </form>
+
+
+    </form>
+
+    <ul class="list-group mt-5">
+        <li class="list-group-item list-group-item-warning ">Result</li>
+        <li class="list-group-item">Class 1 : {{r.0}} %</li>
+        <li class="list-group-item">Class 2 : {{r.1}} %</li>
+        <li class="list-group-item">Class 3 : {{r.2}} %</li>
+        <li class="list-group-item">Class 4 : {{r.3}} %</li>
+
+    </ul>
+    {% endif %}
+</center>
+{% endblock %}
